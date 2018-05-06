@@ -17,13 +17,13 @@ def get_position(position_queue, session, pn):
     url = 'https://www.lagou.com/jobs/positionAjax.json?city=%E6%AD%A6%E6%B1%89&needAddtionalResult=false'
     # 拉钩有反爬机制，头部不加入cookie，爬取四页就挂了。我用了session也不行，只能加上。
     header={
-    'User-Agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Mobile Safari/537.36',
+    'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36',
     'Referer':'https://www.lagou.com/jobs/list_%E8%BF%90%E7%BB%B4%E5%B7%A5%E7%A8%8B%E5%B8%88?city=%E6%AD%A6%E6%B1%89',
     'Host':'www.lagou.com',
-    'Cookie': 'XXXXXXXX'
+    'Cookie': 'JSESSIONID=ABAAABAAAFCAAEG04EC8405BCC18F64C566C833E30833EF; _ga=GA1.2.604249756.1525311743; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1525311744; user_trace_token=20180503094223-3a07bf5e-4e73-11e8-bd62-5254005c3644; LGUID=20180503094223-3a07c40d-4e73-11e8-bd62-5254005c3644; X_HTTP_TOKEN=a414ce312610d84d12a1fa5423f80b68; LG_LOGIN_USER_ID=9ddc8037b6c38cdd64901f065a67ea3a73b4f7938fd9fdaa; _putrc=DA1C985ED9E706CA; login=true; unick=%E9%BB%84%E5%B0%8F%E5%86%9B; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=56; index_location_city=%E6%9D%AD%E5%B7%9E; TG-TRACK-CODE=search_code; gate_login_token=a915244444acf30a77d15d0ded228a913003ab481a2c436d; _gid=GA1.2.1672408694.1525572571; _gat=1; LGSID=20180506100927-81102d8a-50d2-11e8-803d-5254005c3644; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1525572583; LGRID=20180506100938-87b2e066-50d2-11e8-87ef-525400f775ce; SEARCH_ID=d1c8d1921c8448df99761a6053392538'
     }
-    r = session.post(url, data=postdata, headers=header)
-    time.sleep(4)
+    r = session.post(url, data=postdata, timeout=5, headers=header)
+    #time.sleep(4)
     #print(r.json())
     page_positions = r.json()['content']['positionResult']['result']
     for position in page_positions:
@@ -51,10 +51,10 @@ def get_detail(position_queue, session, i):
     'Referer': url,
     'Host':'www.lagou.com',
     'Upgrade-Insecure-Requests': '1',
-    'Cookie': 'XXXXXXXXX'
+    'Cookie': 'JSESSIONID=ABAAABAAAFCAAEG04EC8405BCC18F64C566C833E30833EF; _ga=GA1.2.604249756.1525311743; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1525311744; user_trace_token=20180503094223-3a07bf5e-4e73-11e8-bd62-5254005c3644; LGUID=20180503094223-3a07c40d-4e73-11e8-bd62-5254005c3644; X_HTTP_TOKEN=a414ce312610d84d12a1fa5423f80b68; LG_LOGIN_USER_ID=9ddc8037b6c38cdd64901f065a67ea3a73b4f7938fd9fdaa; _putrc=DA1C985ED9E706CA; login=true; unick=%E9%BB%84%E5%B0%8F%E5%86%9B; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=56; index_location_city=%E6%9D%AD%E5%B7%9E; TG-TRACK-CODE=search_code; gate_login_token=a915244444acf30a77d15d0ded228a913003ab481a2c436d; _gid=GA1.2.1672408694.1525572571; _gat=1; LGSID=20180506100927-81102d8a-50d2-11e8-803d-5254005c3644; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1525572583; LGRID=20180506100938-87b2e066-50d2-11e8-87ef-525400f775ce; SEARCH_ID=d1c8d1921c8448df99761a6053392538'
     }
-    r = requests.get(url, headers=header)
-    time.sleep(2)
+    r = session.get(url, timeout=5, headers=header)
+    #time.sleep(2)
     # 筛选职位信息
     soup = BeautifulSoup(r.content, 'lxml')
     tags = soup.find(class_='job_bt')
