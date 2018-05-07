@@ -125,14 +125,21 @@ class Control(threading.Thread):
                 print('程序执行完毕!')
                 sys.exit()
 
-# 创建一个全局的队列
-position_queue = queue.Queue()
-session = requests.Session()
+def main():
+    # 创建一个全局的队列
+    position_queue = queue.Queue()
+    session = requests.Session()
 
-t1 = Get_position(position_queue, session)
-t2 = Get_detail(position_queue, session)
-t3 = Control(position_queue)
+    t1 = Get_position(position_queue, session)
+    t2 = Get_detail(position_queue, session)
+    t3 = Control(position_queue)
 
-t1.start()
-t2.start()
-t3.start()
+    t1.start()
+    t2.start()
+    t3.start()
+
+    #t1.join()
+    #t2.join()
+    t3.join()
+
+main()
