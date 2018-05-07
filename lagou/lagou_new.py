@@ -4,7 +4,7 @@ import queue
 import requests
 from bs4 import BeautifulSoup
 
-
+# 获取网页信息
 def fetch(url, postdata=None):
     s = requests.Session()
     headers = {
@@ -18,12 +18,12 @@ def fetch(url, postdata=None):
         return s.post(url, timeout=5, data=postdata, headers=headers)
     return s.get(url, timeout=5, headers=headers)
 
-
+# 保存到本地文件
 def save_txt(text):
     with open("./2.txt","ab") as fp:
         fp.write(text.encode('utf-8'))
 
-
+# 通过pn_queue获取页面数，将职位信息存入position_queue
 def get_position(position_queue, pn_queue):
     while True:
         pn = pn_queue.get()
@@ -36,6 +36,7 @@ def get_position(position_queue, pn_queue):
         r = fetch(url, postdata=postdata)
         page_positions = r.json()['content']['positionResult']['result']
         for position in page_positions:
+            # 存入字典
             position_dict = {
                         'position_name': position['positionName'],
                         'work_year': position['workYear'],
@@ -44,10 +45,11 @@ def get_position(position_queue, pn_queue):
                         'company_name': position['companyFullName'],
                         'position_id': position['positionId']
                     }
+            # 将职位字典存入队列
             position_queue.put(position_dict)
         pn_queue.task_done()
 
-
+# 获取职位描述
 def get_detail(position_queue):
     while True:
         position_dict = position_queue.get()
@@ -76,9 +78,11 @@ def get_detail(position_queue):
 def lagou_main():
     position_queue = queue.Queue()
     pn_queue = queue.Queue()
+    # 一共有6页数据
     for i in range(1, 7):
         pn_queue.put(i)
 
+    # 生成5个线程
     for i in range(5):
         t = threading.Thread(target=get_position, args=(position_queue, pn_queue))
         t.setDaemon(True)
