@@ -1,5 +1,5 @@
 ## 安装pygame
-
+官网地址: https://www.pygame.org/wiki/GettingStarted
 ### MAC的坑
 
 - mac安装注意指定版本，`pip install pygame==1.9.2`，不然报错`src/scrap.c:27:10: fatal error: 'SDL.h' file not found`
