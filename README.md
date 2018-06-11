@@ -12,3 +12,6 @@
 ## 3、inotify
 用python实现了两台服务器间文件夹实时同步，日志输出。用到了paramiko，watchdog，logging等模块。
 博客地址： https://www.boheyan.cn/file-sync.html
+
+## 4、game
+这是图书<python编程从入门到实践>中一个打飞机的项目，跟着做了一遍，记录了mac开发pygame的一些坑。
